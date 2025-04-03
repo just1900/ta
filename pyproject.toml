@@ -1,0 +1,22 @@
+[project]
+name = "tidb-optimizer"
+version = "0.1.0"
+description = "TiDB SQL Optimization Agent for analyzing and optimizing slow queries"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "mcp>=0.3.0",
+  "openai>=1.70.0",
+  "asyncio>=3.4.3",
+  "python-dateutil>=2.8.2",
+  "pydantic>=2.0.0",
+  "duckduckgo-search>=3.9.0",
+  "fastapi>=0.103.1",
+  "uvicorn>=0.23.2",
+  "jinja2>=3.1.2",
+  "starlette>=0.27.0",
+  "python-multipart>=0.0.6",
+  "websockets>=11.0.3",
+  "sqlalchemy>=2.0.40",
+  "agno>=1.2.6",
+]

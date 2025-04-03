@@ -1,93 +1,110 @@
-# TiDB SQL Optimization Agent System
+# TiDB SQL Optimization Agent
 
-An AI Agent-based system for analyzing and optimizing slow queries in TiDB databases. This system automates the analysis of slow query logs in TiDB databases, identifies queries that need optimization, and generates optimization recommendations or automatically applies optimizations.
+An intelligent AI agent system for analyzing and optimizing slow queries in TiDB clusters. This project aims to automate the process of SQL query optimization using AI-driven analysis and recommendations.
 
-## System Architecture
+## Overview
 
-The system consists of three main components:
+The TiDB SQL Optimization Agent is designed to address the challenges of managing slow SQL queries in large-scale TiDB deployments. It automatically analyzes slow query logs, identifies performance bottlenecks, and provides optimization suggestions or automatic optimizations when possible.
 
-1. **Slow Query Log Analyzer Agent (SlowlogAnalyzerAgent)**: Analyzes slow query logs, identifies patterns and key performance bottleneck queries
-2. **SQL Optimization Agent (SQLOptimizerAgent)**: Generates optimization recommendations based on analysis results and optionally executes optimizations
-3. **TiDB Optimization System (TiDBOptimizerSystem)**: Coordinates the above two agents to implement a complete analysis and optimization workflow
+### Key Features
 
-The system uses [Agno](https://docs.agno.com/agents/) as the Agent development framework, combined with MCP (Model Context Protocol) servers to interact with TiDB-related components.
+- Automated slow query log analysis
+- AI-driven SQL optimization recommendations
+- Integration with TiDB observability data
+- Automatic optimization execution (with safeguards)
+- Performance impact analysis and rollback capabilities
+- Structured optimization reports
 
-## Features
+## Architecture
 
-- Automatically analyzes slow query logs and identifies key problem queries
-- Gathers and analyzes table structures, statistics, and execution plans
-- Generates specific, actionable optimization recommendations (such as index creation, statistics updates, SQL rewrites)
-- Optionally executes optimization operations automatically and evaluates their effectiveness
-- Generates detailed analysis and optimization reports
+The system consists of several key components:
 
-## Installation and Dependencies
+1. **AI Agent**: Implements the ReAct (Reasoning + Acting) paradigm for intelligent decision-making
+2. **MCP Server**: Model Context Protocol server that provides standardized interfaces to various data sources
+3. **Slow Query Analysis**: Processes and analyzes slow query logs from S3 storage
+4. **Optimization Engine**: Generates and validates SQL optimization suggestions
 
+## Prerequisites
+
+- Python 3.10 or higher
+- TiDB cluster with slow query logging enabled
+- Access to required data sources (S3, Prometheus metrics, etc.)
+- Necessary permissions for SQL optimization operations
+
+## Installation
+
+1. Clone the repository:
 ```bash
-# Install required dependencies
-pip install agno-ai mcp openai
+git clone https://github.com/yourusername/tidb-optimizer.git
+cd tidb-optimizer
+```
 
-# Install MCP server related components
-npm install -g uvx
+2. Install uv (if not already installed):
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+3. Create virtual environment and install dependencies:
+```bash
+uv venv
+source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+uv pip install -e .
+```
+
+## Configuration
+
+1. Create a `.env` file with necessary configuration:
+```env
+# Database connection
+TIDB_HOST=your_tidb_host
+TIDB_PORT=4000
+TIDB_USER=your_username
+TIDB_PASSWORD=your_password
+
+# Other configurations
+S3_BUCKET=your_slowlog_bucket
+PROMETHEUS_URL=your_prometheus_url
 ```
 
 ## Usage
 
-### 1. Running the Slow Query Analyzer
+[Usage instructions will be added based on implementation details]
 
-```python
-from slowlog_analyzer_agent import run_slowlog_analyzer
-import asyncio
+## Project Structure
 
-# Analyze slow query logs from the last 24 hours
-asyncio.run(
-    run_slowlog_analyzer(
-        "Analyze slow query logs from the last 24 hours and identify the top 10 slowest queries with preliminary analysis"
-    )
-)
+```
+.
+├── src/              # Source code
+├── sql/              # SQL-related resources
+├── tmp/              # Temporary files
+├── design.md         # Detailed design documentation
+├── pyproject.toml    # Project configuration and dependencies
+├── uv.lock           # Lock file for dependency versions
+└── README.md         # This file
 ```
 
-### 2. Running the SQL Optimizer
+## Dependencies
 
-```python
-from sql_optimizer_agent import run_sql_optimizer
-import asyncio
+Key dependencies include:
+- mcp >= 0.3.0
+- openai >= 1.70.0
+- fastapi >= 0.103.1
+- sqlalchemy >= 2.0.40
+- agno >= 1.2.6
+- [See pyproject.toml for complete list]
 
-# Optimize a specific query
-asyncio.run(
-    run_sql_optimizer(
-        "Please analyze and optimize the performance of this query: SELECT * FROM orders WHERE create_date > '2023-01-01' AND status = 'processing'"
-    )
-)
-```
+## Development
 
-### 3. Running the Complete Optimization Workflow
+[Development instructions will be added based on contribution guidelines]
 
-```python
-from tidb_optimizer_system import TiDBOptimizerSystem
-import asyncio
+## License
 
-# Run the complete analysis and optimization workflow
-asyncio.run(
-    TiDBOptimizerSystem.analyze_and_optimize(
-        time_range_hours=24,  # Analyze the past 24 hours
-        top_n=5,              # Analyze the top 5 problem queries
-        auto_optimize=False   # Set to True to automatically execute optimizations
-    )
-)
-```
+[Add appropriate license information]
 
-## MCP Server Requirements
+## Contributing
 
-The system requires the following MCP server components:
+[Add contribution guidelines]
 
-1. `mcp-server-tidb-slowlog`: For retrieving and analyzing TiDB slow query logs
-2. `mcp-server-tidb-schema`: For retrieving table structure information
-3. `mcp-server-tidb-stats`: For retrieving statistics information
-4. `mcp-server-prometheus-metrics`: For retrieving Prometheus metric data
-5. `mcp-server-tidb-execution`: For executing SQL queries and optimization operations
+## Support
 
-## Notes
-
-- Automatic optimization functionality (`auto_optimize=True`) should be used with caution; it's recommended to verify in a test environment before applying to production
-- Optimization recommendations may require manual review, especially recommendations involving table structure changes
-- The system depends on the availability and correct configuration of MCP servers
+[Add support information]
