@@ -53,22 +53,13 @@ uv pip install -e .
 
 ## Configuration
 
-1. Create a `.env` file with necessary configuration:
-```env
-# Database connection
-TIDB_HOST=your_tidb_host
-TIDB_PORT=4000
-TIDB_USER=your_username
-TIDB_PASSWORD=your_password
-
-# Other configurations
-S3_BUCKET=your_slowlog_bucket
-PROMETHEUS_URL=your_prometheus_url
-```
+Create a `.env` file from example
 
 ## Usage
 
-[Usage instructions will be added based on implementation details]
+```bash
+uv run src/agents/sql_workflow.py
+```
 
 ## Project Structure
 
@@ -96,15 +87,3 @@ Key dependencies include:
 ## Development
 
 [Development instructions will be added based on contribution guidelines]
-
-## License
-
-[Add appropriate license information]
-
-## Contributing
-
-[Add contribution guidelines]
-
-## Support
-
-[Add support information]
