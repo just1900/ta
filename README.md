@@ -58,7 +58,7 @@ Create a `.env` file from example
 ## Usage
 
 ```bash
-uv run src/agents/sql_workflow.py
+uv run src/demo.py
 ```
 
 ## Project Structure
