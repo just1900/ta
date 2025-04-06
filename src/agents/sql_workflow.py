@@ -17,7 +17,10 @@ from agno.utils.pprint import pprint_run_response
 from mcp import StdioServerParameters
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-
+from agno.knowledge.text import TextKnowledgeBase
+from agno.vectordb.pgvector import PgVector, SearchType
+from agno.embedder.openai import OpenAIEmbedder
+from pathlib import Path
 
 class SlowQueryInfo(BaseModel):
     """Information about a slow query extracted from slowlog data."""
@@ -206,6 +209,21 @@ class SQLOptimizationWorkflow(Workflow):
                 "GRAFANA_API_KEY": os.getenv("GRAFANA_API_KEY"),
             }
         )
+
+        knowledge_base = TextKnowledgeBase(
+            path=Path("docs/llms-full.txt"),
+            # Use LanceDB as the vector database and store embeddings in the `tidb_docs` table
+            vector_db=PgVector(
+                db_url=os.getenv("PGVECTOR_DB_URL"),
+                table_name="tidb",
+                search_type=SearchType.hybrid,
+                embedder=OpenAIEmbedder(
+                    id="text-embedding-3-small"
+                )
+            )
+        )
+        self.slowlog_analyzer.knowledge_base = knowledge_base
+        self.sql_optimizer.knowledge_base = knowledge_base
 
         async with MCPTools(server_params=tidb_server_params) as tidb_tools, MCPTools(server_params=o11y_server_params) as o11y_tools:
 

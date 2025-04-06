@@ -113,7 +113,7 @@ async def run_sql_optimizer(message: str) -> None:
     # Configure TiDB related MCP server parameters using environment variables
     tidb_server_params = StdioServerParameters(
         command="uv",
-        args=["--directory", "/Users/just/Workspace/ai/mcp/mcp-server-tidb", "run", "src/main.py"],
+        args=["--directory", os.getenv("TIDB_MCP_SERVER_DIR"), "run", "src/main.py"],
         env={
             "TIDB_HOST": os.getenv("TIDB_HOST"),
             "TIDB_PORT": os.getenv("TIDB_PORT"),

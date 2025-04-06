@@ -53,3 +53,5 @@ dmypy.json
 # Documentation builds
 docs/_build/
 site/
+
+uv.lock
